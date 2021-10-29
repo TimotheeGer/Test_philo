@@ -6,7 +6,7 @@
 /*   By: tigerber <tigerber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 14:02:27 by tigerber          #+#    #+#             */
-/*   Updated: 2021/10/29 15:03:07 by tigerber         ###   ########.fr       */
+/*   Updated: 2021/10/29 15:39:40 by tigerber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ typedef struct		s_philo
 {
 	int				fourch;
 	long			time;
+	int				pos;
 	
 }					t_philo;
 

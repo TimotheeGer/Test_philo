@@ -6,7 +6,7 @@
 /*   By: tigerber <tigerber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 15:13:39 by tigerber          #+#    #+#             */
-/*   Updated: 2021/10/29 14:20:09 by tigerber         ###   ########.fr       */
+/*   Updated: 2021/10/29 15:28:20 by tigerber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ mutex pour chacun deux.
 
 philo 1 = mange -> laisse tomber la fourchette -> dormir -> pense
 
-1 millisecondes = 1000 microsecondes
+100 millisecondes = 100.000 microsecondes
 
 #include <sys/time.h>
 #include <pthread.h>
