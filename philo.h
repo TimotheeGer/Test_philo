@@ -6,7 +6,7 @@
 /*   By: tigerber <tigerber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 14:02:27 by tigerber          #+#    #+#             */
-/*   Updated: 2021/10/29 15:39:40 by tigerber         ###   ########.fr       */
+/*   Updated: 2021/11/01 14:34:00 by tigerber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct		s_data
 	struct timeval	time;
 	t_philo			philo1;
 	t_philo			philo2;
+	pthread_mutex_t	fork;
 
 }					t_data;
 

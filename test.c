@@ -6,11 +6,20 @@
 /*   By: tigerber <tigerber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 13:00:08 by tigerber          #+#    #+#             */
-/*   Updated: 2021/10/29 15:47:36 by tigerber         ###   ########.fr       */
+/*   Updated: 2021/11/01 14:37:32 by tigerber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo.h"
+
+void	ft_usleep(int t, t_data *d)
+{
+	struct timeval	time;
+	while (1)
+	{
+		
+	}
+}
 
 void	ft_philo_eat(t_philo *philo)
 {
@@ -53,11 +62,13 @@ int	main(int ac, char *av[])
 	// }
 	pthread_t th1;
 	pthread_t th2;
+	pthread_mutex_init(&d.fork, NULL);
 	d.philo1.pos = 1;
 	pthread_create(&th1 , NULL, (void *)ft_philo_eat, &d.philo1);
 	d.philo2.pos = 2;
 	pthread_create(&th2 , NULL, (void *)ft_philo_eat, &d.philo2);
 	pthread_join(th1 , NULL);
 	pthread_join(th2 , NULL);
+	pthread_mutex_destroy(&d.fork);
 	return (0);
 }
