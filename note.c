@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   note.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tigerber <tigerber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tnave <tnave@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 15:13:39 by tigerber          #+#    #+#             */
-/*   Updated: 2021/10/29 15:28:20 by tigerber         ###   ########.fr       */
+/*   Updated: 2021/11/01 17:23:47 by tnave            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-Argument du programme = 1 - ./philo 
-                        2 - nombre de philosof 
-                        3 - (time to die) temp avan de mourir de faim 
+Argument du programme = 1 - ./philo
+                        2 - nombre de philosof
+                        3 - (time to die) temp avan de mourir de faim
                         4 - (time to eat) temp pour manger 
                         5 - (time_to_sleep) temp de dormir 
                         6 - [facultatif](number_of_times_each_philosopher_must_eat)
