@@ -6,7 +6,7 @@
 /*   By: tigerber <tigerber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 14:02:27 by tigerber          #+#    #+#             */
-/*   Updated: 2021/11/01 19:10:46 by tigerber         ###   ########.fr       */
+/*   Updated: 2021/11/04 18:28:24 by tigerber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,35 @@
 #include <pthread.h>
 #include <libc.h>
 
-typedef struct		s_philo
+typedef struct			s_do
 {
-	long			time;
-	int				id;
-	pthread_t 		th;
-}					t_philo;
+	pthread_mutex_t		*lock;	
+}						t_do;
 
-typedef struct		s_data
+typedef struct			s_philo
 {
-	pthread_mutex_t *fork;
-	int				nb_philo;
-	time_t			time_to_die;
-	time_t			time_to_eat;
-	time_t			time_to_sleep;
-	int 			count_eat;
-	long			time_milli;
-	struct timeval	time;
-	t_philo			*philo;
-	// t_philo			philo2;
-	// t_philo			philo3;
-	pthread_mutex_t	fork;
+	int					id;
+	int					nb_philo;
+	pthread_mutex_t 	*fork_L;
+	pthread_mutex_t 	*fork_R;
+	pthread_mutex_t		*write;
+	pthread_t 			th;
+	time_t				time_to_die;
+	time_t				time_to_eat;
+	time_t				time_to_sleep;
+	int 				count_eat;
+	long				time;
+}						t_philo;
 
-}					t_data;
+void	ft_usleep(time_t t);
+
+int	ft_init_param(int ac, char **av, t_philo *ph);
+
+int	ft_check_calloc(void *data);
+
+t_philo	*ft_init_philo(char **av);
+
+void	*ft_calloc(int size);
+
+
 

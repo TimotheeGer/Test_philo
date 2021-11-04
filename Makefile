@@ -3,17 +3,19 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tnave <tnave@student.42.fr>                +#+  +:+       +#+         #
+#    By: tigerber <tigerber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/01 17:12:54 by tnave             #+#    #+#              #
-#    Updated: 2021/11/01 17:13:44 by tnave            ###   ########.fr        #
+#    Updated: 2021/11/02 17:48:55 by tigerber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME = philo
 
-SRCS = 	test.c
+SRCS = 	srcs/philosopher.c \
+		srcs/utils.c \
+		srcs/init.c
 
 CC = gcc
 
