@@ -12,11 +12,15 @@
 
 #include <sys/time.h>
 #include <pthread.h>
-#include <libc.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 typedef struct			s_data
 {
 	pthread_mutex_t		lock;	
+	pthread_mutex_t		lock_fork;	
 	pthread_mutex_t 	*fork;
 	int					nb_philo;
 	time_t				time_to_die;

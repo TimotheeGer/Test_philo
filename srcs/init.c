@@ -34,6 +34,7 @@ t_data	*ft_init_param(int ac, char **av)
 		i++;
 	}
 	pthread_mutex_init(&d->lock, NULL);
+	pthread_mutex_init(&d->lock_fork, NULL);
 	return (d);
 }
 

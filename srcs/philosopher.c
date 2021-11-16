@@ -25,28 +25,35 @@ void	print_ph(char *str, time_t t, t_philo *ph)
 	// usleep(100);
 }
 
-void	*ft_philo_eat(void *philo)
+void	*ft_philo_eat(t_philo *ph)
 {
-	t_philo	*ph;
+	// t_philo	*ph;
+	int L;
+	int R;
 
-	ph = (t_philo *)philo;
+	// ph = (t_philo *)philo;
+	L = ph->id;
+	R = (ph->id + 1) % ph->data->nb_philo;
 	while (!ph->data->dead)
 	{	
-		pthread_mutex_lock(&ph->data->fork[ph->id]);
+		
+		// pthread_mutex_lock(&ph->data->lock_fork);
+		pthread_mutex_lock(&ph->data->fork[L]);
 		print_ph("-> %ld ph %d has taken a fork_L.\n", get_time(ph->data->start), ph);
-		pthread_mutex_lock(&ph->data->fork[(ph->id + 1) % ph->data->nb_philo]);
+		pthread_mutex_lock(&ph->data->fork[R]);
 		print_ph("-> %ld ph %d has taken a fork_R.\n", get_time(ph->data->start), ph);
+		// pthread_mutex_unlock(&ph->data->lock_fork);
 		// pthread_mutex_lock(&ph->eating);
+
 		print_ph("-> %ld ph %d is eating.\n",get_time(ph->data->start), ph);
 		ph->life = 1;
-		ft_usleep(400);
+		ft_usleep(200);
 		// pthread_mutex_unlock(&ph->eating);
-		pthread_mutex_unlock(&ph->data->fork[ph->id]);
-		pthread_mutex_unlock(&ph->data->fork[(ph->id + 1) % ph->data->nb_philo]);
+		pthread_mutex_unlock(&ph->data->fork[L]);
+		pthread_mutex_unlock(&ph->data->fork[R]);
 		print_ph("-> %ld ph %d is sleeping.\n", get_time(ph->data->start), ph);
-		ft_usleep(300);
+		ft_usleep(200);
 		print_ph("-> %ld ph %d is thinking.\n", get_time(ph->data->start), ph);
-		usleep(100);
 	}
 	return (NULL);
 }
@@ -74,6 +81,7 @@ void	start_philo(t_philo *ph)
 	{
 		pthread_create(&ph[i].th, NULL, (void *)ft_philo_eat, &ph[i]);
 		// usleep(50);
+		pthread_create(&ph[i].control, NULL, (void *)ft_control, &ph[i]);
 		i+= 2;
 		usleep(100);
 	}
@@ -85,10 +93,10 @@ void	start_philo(t_philo *ph)
 		i+= 2;
 		usleep(100);
 	}
-	i = 0;
+	// i = 0;
 	// while (i < ph[0].data->nb_philo)
 	// {
-	// 	pthread_create(&ph[i].control, NULL, (void *)ft_control, &ph[i]);
+	// 	
 	// 	usleep(50);
 	// 	i++;
 	// }

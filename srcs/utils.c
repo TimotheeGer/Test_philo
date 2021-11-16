@@ -19,7 +19,7 @@ void	ft_usleep(time_t t)
 	start = get_time(0);
 	while (1)
 	{
-		if (get_time(0) - start == t)
+		if (get_time(0) - start >= t)
 			break;
 		usleep(200);
 	}

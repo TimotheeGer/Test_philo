@@ -19,7 +19,7 @@ SRCS = 	srcs/philosopher.c \
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -I ./include/
+CFLAGS = -Wall -Wextra -Werror -I ./include/ -pthread
 
 HEADER = -I ./includes/
 
