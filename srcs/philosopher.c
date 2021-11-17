@@ -6,7 +6,7 @@
 /*   By: tigerber <tigerber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 13:00:08 by tigerber          #+#    #+#             */
-/*   Updated: 2021/11/15 23:11:36 by tigerber         ###   ########.fr       */
+/*   Updated: 2021/11/17 00:53:23 by tigerber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,54 +14,54 @@
 
 void	print_ph(char *str, time_t t, t_philo *ph)
 {
-	(void)t;
-	(void)str;
 	pthread_mutex_lock(&ph->data->lock);
-	// write(1, ft_itoa(t), strlen(ft_itoa(t)));
-	// write(1, " ", 1);
-	// write(1, ft_itoa(ph->id + 1), strlen(ft_itoa(ph->id + 1)));
-	printf(str, t, ph->id + 1);
+	if (!ph->data->dead)
+		printf(str, t, ph->id + 1);
 	pthread_mutex_unlock(&ph->data->lock);
-	// usleep(100);
 }
 
-void	*ft_philo_eat(void *philo)
+void	ft_philo_eat(t_philo *ph)
 {
-	t_philo	*ph;
-
-	ph = (t_philo *)philo;
+	ph->life = get_time(0);
 	while (!ph->data->dead)
 	{	
 		pthread_mutex_lock(&ph->data->fork[ph->id]);
-		print_ph("-> %ld ph %d has taken a fork_L.\n", get_time(ph->data->start), ph);
+		print_ph("%ld %d has taken a fork_L.\n", get_time(ph->data->start), ph);
 		pthread_mutex_lock(&ph->data->fork[(ph->id + 1) % ph->data->nb_philo]);
-		print_ph("-> %ld ph %d has taken a fork_R.\n", get_time(ph->data->start), ph);
-		// pthread_mutex_lock(&ph->eating);
-		print_ph("-> %ld ph %d is eating.\n",get_time(ph->data->start), ph);
-		ph->life = 1;
+		print_ph("%ld %d has taken a fork_R.\n", get_time(ph->data->start), ph);
+		ph->life = get_time(0);
+		pthread_mutex_lock(&ph->eating);
+		print_ph("%ld %d is eating.\n",get_time(ph->data->start), ph);
 		ft_usleep(400);
-		// pthread_mutex_unlock(&ph->eating);
+		pthread_mutex_unlock(&ph->eating);
 		pthread_mutex_unlock(&ph->data->fork[ph->id]);
 		pthread_mutex_unlock(&ph->data->fork[(ph->id + 1) % ph->data->nb_philo]);
-		print_ph("-> %ld ph %d is sleeping.\n", get_time(ph->data->start), ph);
+		if (ph->data->dead == 1)
+			return ;
+		print_ph("%ld %d is sleeping.\n", get_time(ph->data->start), ph);
 		ft_usleep(300);
-		print_ph("-> %ld ph %d is thinking.\n", get_time(ph->data->start), ph);
-		usleep(100);
+		print_ph("%ld %d is thinking.\n", get_time(ph->data->start), ph);
 	}
-	return (NULL);
+	return ;
 }
 
-void	*ft_control(void *philo)
+void	ft_control(t_philo *ph)
 {
-	t_philo *ph;
-
-	ph = (t_philo *)philo;
-
-	while(1)
+	while(!ph->data->dead)
 	{
-		ft_usleep(1000);
-		printf("test thread philo life = %ld\n", ph->life);
-	} 
+		usleep(1000);
+		pthread_mutex_lock(&ph->eating);
+		if (get_time(0) - ph->life > 1100)
+		{
+			ph->data->dead = 1;
+			printf("test thread philo %d life = %ld\n", ph->id + 1, get_time(0) - ph->life);
+			pthread_mutex_unlock(&ph->eating);
+			return ;
+		}
+		pthread_mutex_unlock(&ph->eating);
+		
+	}
+	return ;
 }
 
 void	start_philo(t_philo *ph)
@@ -73,40 +73,29 @@ void	start_philo(t_philo *ph)
 	while (i < ph[0].data->nb_philo)
 	{
 		pthread_create(&ph[i].th, NULL, (void *)ft_philo_eat, &ph[i]);
-		// usleep(50);
+		usleep(50);
+		pthread_create(&ph[i].control, NULL, (void *)ft_control, &ph[i]);
 		i+= 2;
-		usleep(100);
+		usleep(50);
 	}
 	i = 1;
 	while (i < ph[0].data->nb_philo)
 	{
 		pthread_create(&ph[i].th, NULL, (void *)ft_philo_eat, &ph[i]);
-		// usleep(50);
+		usleep(50);
+		pthread_create(&ph[i].control, NULL, (void *)ft_control, &ph[i]);
 		i+= 2;
-		usleep(100);
+		usleep(50);
 	}
-	i = 0;
-	// while (i < ph[0].data->nb_philo)
-	// {
-	// 	pthread_create(&ph[i].control, NULL, (void *)ft_control, &ph[i]);
-	// 	usleep(50);
-	// 	i++;
-	// }
-	
 	i = 0;
 	while (i < ph[0].data->nb_philo)
 	{
 		pthread_join(ph[i].th, NULL);
+		pthread_join(ph[i].control, NULL);
 		usleep(50);
 		i++;
 	}
-	i = 0;
-	// while (i < ph[0].data->nb_philo)
-	// {
-	// 	pthread_join(ph[i].control, NULL);
-	// 	usleep(50);
-	// 	i++;
-	// }
+	return;
 }
 
 void	ft_check_philo(t_philo *ph, char **av)
@@ -115,7 +104,7 @@ void	ft_check_philo(t_philo *ph, char **av)
 
 	while (i < atoi(av[1]))
 	{
-		printf("philo id = %d\n", ph[i].id);
+		printf("philo id = %d\n", ph[i].id + 1);
 		printf("philo adresse = %p\n", &ph[i]);
 		printf("philo data nb_philo = %d\n", ph[i].data->nb_philo);
 		printf("philo data adress = %p\n", (void*)ph[i].data);
@@ -124,8 +113,6 @@ void	ft_check_philo(t_philo *ph, char **av)
 		printf("philo dead = %d\n", ph[i].data->dead);
 		printf("-------------------------------------------\n");
 		i++;
-		if (i == atoi(av[1]))
-			i = 0;
 	}
 }
 

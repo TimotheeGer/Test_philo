@@ -6,7 +6,7 @@
 #    By: tigerber <tigerber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/01 17:12:54 by tnave             #+#    #+#              #
-#    Updated: 2021/11/02 17:48:55 by tigerber         ###   ########.fr        #
+#    Updated: 2021/11/16 23:46:13 by tigerber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRCS = 	srcs/philosopher.c \
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -I ./include/
+CFLAGS = -Wall -Wextra -Werror -I ./include/ -pthread
 
 HEADER = -I ./includes/
 

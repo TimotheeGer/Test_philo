@@ -6,7 +6,7 @@
 /*   By: tigerber <tigerber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 14:02:27 by tigerber          #+#    #+#             */
-/*   Updated: 2021/11/15 17:27:19 by tigerber         ###   ########.fr       */
+/*   Updated: 2021/11/17 00:16:05 by tigerber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct			s_philo
 {
 	int					id;
 	time_t				life;
+	time_t				health;
 	time_t				time;
 	pthread_t 			th;
 	pthread_t 			control;
