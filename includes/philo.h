@@ -6,21 +6,17 @@
 /*   By: tigerber <tigerber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 14:02:27 by tigerber          #+#    #+#             */
-/*   Updated: 2021/11/15 17:27:19 by tigerber         ###   ########.fr       */
+/*   Updated: 2021/11/17 00:16:05 by tigerber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/time.h>
 #include <pthread.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <libc.h>
 
 typedef struct			s_data
 {
 	pthread_mutex_t		lock;	
-	pthread_mutex_t		lock_fork;	
 	pthread_mutex_t 	*fork;
 	int					nb_philo;
 	time_t				time_to_die;
@@ -36,6 +32,7 @@ typedef struct			s_philo
 {
 	int					id;
 	time_t				life;
+	time_t				health;
 	time_t				time;
 	pthread_t 			th;
 	pthread_t 			control;

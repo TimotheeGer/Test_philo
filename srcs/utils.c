@@ -6,11 +6,19 @@
 /*   By: tigerber <tigerber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 15:42:23 by tigerber          #+#    #+#             */
-/*   Updated: 2021/11/15 17:27:05 by tigerber         ###   ########.fr       */
+/*   Updated: 2021/11/17 01:03:10 by tigerber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+time_t	get_time(time_t start)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000 - start);
+}
 
 void	ft_usleep(time_t t)
 {
@@ -56,65 +64,3 @@ void	*ft_error(int val, void * data)
 	return (NULL);
 }
 
-time_t	get_time(time_t start)
-{
-	struct timeval	time;
-
-	if (gettimeofday(&time, NULL) == -1)
-		return (-1);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000 - start);
-}
-
-
-int			countnum(int n)
-{
-	int		i;
-	long	nb;
-
-	i = 0;
-	nb = n;
-	if (nb == 0)
-	{
-		return (1);
-	}
-	if (nb < 0)
-	{
-		nb = nb * -1;
-		i++;
-	}
-	while (nb)
-	{
-		nb = nb / 10;
-		i++;
-	}
-	return (i);
-}
-
-char		*ft_itoa(int n)
-{
-	int		size;
-	char	*str;
-	long	nb;
-
-	nb = n;
-	size = countnum(n);
-	if (!(str = malloc(sizeof(char) * size + 1)))
-		return (NULL);
-	str[size] = '\0';
-	if (nb == 0)
-	{
-		str[0] = '0';
-		return (str);
-	}
-	if (nb < 0)
-	{
-		str[0] = '-';
-		nb = nb * -1;
-	}
-	while (size-- && nb > 0)
-	{
-		str[size] = nb % 10 + 48;
-		nb = nb / 10;
-	}
-	return (str);
-}
