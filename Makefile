@@ -6,7 +6,7 @@
 #    By: tigerber <tigerber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/01 17:12:54 by tnave             #+#    #+#              #
-#    Updated: 2021/11/16 23:46:13 by tigerber         ###   ########.fr        #
+#    Updated: 2021/11/17 18:57:04 by tigerber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,9 @@
 NAME = philo
 
 SRCS = 	srcs/philosopher.c \
+		srcs/thread.c \
 		srcs/utils.c \
+		srcs/utils_two.c \
 		srcs/init.c
 
 CC = gcc
