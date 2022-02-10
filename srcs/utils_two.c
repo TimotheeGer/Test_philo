@@ -6,17 +6,17 @@
 /*   By: tigerber <tigerber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 11:25:48 by tigerber          #+#    #+#             */
-/*   Updated: 2021/11/17 18:58:01 by tigerber         ###   ########.fr       */
+/*   Updated: 2021/12/02 13:38:40 by tigerber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	ft_atoi(const char *nptr)
+long int	ft_atoi(const char *nptr)
 {
-	int	i;
-	int	res;
-	int	neg;
+	long int	i;
+	long int	res;
+	int			neg;
 
 	i = 0;
 	res = 0;
@@ -70,10 +70,10 @@ int	ft_parse(int ac, char *av[])
 
 void	print_ph(char *str, time_t t, t_philo *ph)
 {
-	pthread_mutex_lock(&ph->data->lock);
-	if (!ph->data->dead || ph->count == 0)
+	pthread_mutex_lock(&ph->data->check_dead);
+	if (!ph->data->dead)
 		printf(str, t, ph->id + 1);
-	pthread_mutex_unlock(&ph->data->lock);
+	pthread_mutex_unlock(&ph->data->check_dead);
 }
 
 void	ft_destroy_all(t_philo *ph, t_data *d)
@@ -84,6 +84,9 @@ void	ft_destroy_all(t_philo *ph, t_data *d)
 	i = 0;
 	nb_ph = d->nb_philo;
 	pthread_mutex_destroy(&d->lock);
+	pthread_mutex_destroy(&d->control);
+	pthread_mutex_destroy(&d->check_dead);
+	pthread_mutex_destroy(&d->check_start);
 	while (i < nb_ph)
 	{
 		pthread_mutex_destroy(&d->fork[i]);

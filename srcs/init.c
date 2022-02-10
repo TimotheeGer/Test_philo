@@ -6,11 +6,20 @@
 /*   By: tigerber <tigerber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 15:48:50 by tigerber          #+#    #+#             */
-/*   Updated: 2021/11/17 18:46:34 by tigerber         ###   ########.fr       */
+/*   Updated: 2021/11/30 16:11:25 by tigerber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+void	ft_init_mutex(t_data *d)
+{
+	pthread_mutex_init(&d->lock, NULL);
+	pthread_mutex_init(&d->control, NULL);
+	pthread_mutex_init(&d->check_dead, NULL);
+	pthread_mutex_init(&d->check_start, NULL);
+	return ;
+}
 
 t_data	*ft_init_param(int ac, char **av)
 {
@@ -36,7 +45,7 @@ t_data	*ft_init_param(int ac, char **av)
 		pthread_mutex_init(&d->fork[i], NULL);
 		i++;
 	}
-	pthread_mutex_init(&d->lock, NULL);
+	ft_init_mutex(d);
 	return (d);
 }
 

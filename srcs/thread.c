@@ -6,62 +6,55 @@
 /*   By: tigerber <tigerber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 18:56:35 by tigerber          #+#    #+#             */
-/*   Updated: 2021/11/17 19:21:55 by tigerber         ###   ########.fr       */
+/*   Updated: 2021/12/03 12:50:22 by tigerber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	ft_is_one_philo(int ac, char *av[])
+int	ft_check_philo_eat(t_philo *p)
 {
-	if (ac == 6)
+	pthread_mutex_lock(&p->data->check_dead);
+	if (p->data->dead)
 	{
-		if (ft_atoi(av[5]) == 0)
-			return (0);
+		pthread_mutex_unlock(&p->data->check_dead);
+		return (1);
 	}
-	if (ft_atoi(av[1]) == 1)
+	pthread_mutex_unlock(&p->data->check_dead);
+	pthread_mutex_lock(&p->data->control);
+	if (p->count != -1 && p->count-- == 0)
 	{
-		printf("0 1 has taken a fork.\n");
-		printf("%d 1 is dead.\n", ft_atoi(av[2]));
-		return (0);
+		pthread_mutex_unlock(&p->data->control);
+		return (1);
 	}
-	return (1);
+	pthread_mutex_unlock(&p->data->control);
+	return (0);
 }
 
-void	ft_control(t_philo *ph)
-{
-	while (!ph->data->dead)
-	{
-		usleep(1000);
-		if (ph->count == 0)
-			return ;
-		pthread_mutex_lock(&ph->eating);
-		if (get_time(0) - ph->life > ph->data->time_to_die)
-		{
-			ph->data->dead = 1;
-			printf("%ld %d id dead.\n", get_time(ph->data->start), ph->id + 1);
-			pthread_mutex_unlock(&ph->eating);
-			return ;
-		}
-		pthread_mutex_unlock(&ph->eating);
-	}
+void	ft_init_count_and_life(t_philo *p)
+{	
+	pthread_mutex_lock(&p->data->control);
+	p->count = p->data->count_eat;
+	pthread_mutex_unlock(&p->data->control);
+	pthread_mutex_lock(&p->eating);
+	p->life = get_time(0);
+	pthread_mutex_unlock(&p->eating);
 	return ;
 }
 
 void	ft_philo_eat(t_philo *p)
 {
-	p->count = p->data->count_eat;
-	p->life = get_time(0);
-	while (!p->data->dead)
+	ft_init_count_and_life(p);
+	while (1)
 	{	
-		if (p->count != -1 && p->count-- == 0)
+		if (ft_check_philo_eat(p))
 			return ;
 		pthread_mutex_lock(&p->data->fork[p->id]);
-		print_ph("%ld %d has taken a fork_L.\n", get_time(p->data->start), p);
+		print_ph("%ld %d has taken a fork.\n", get_time(p->data->start), p);
 		pthread_mutex_lock(&p->data->fork[(p->id + 1) % p->data->nb_philo]);
-		print_ph("%ld %d has taken a fork_R.\n", get_time(p->data->start), p);
-		p->life = get_time(0);
+		print_ph("%ld %d has taken a fork.\n", get_time(p->data->start), p);
 		pthread_mutex_lock(&p->eating);
+		p->life = get_time(0);
 		print_ph("%ld %d is eating.\n", get_time(p->data->start), p);
 		ft_usleep(p->data->time_to_eat);
 		pthread_mutex_unlock(&p->eating);
